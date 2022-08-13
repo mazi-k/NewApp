@@ -1,6 +1,5 @@
 package com.example.newapp.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.newapp.App
 import com.example.newapp.R
