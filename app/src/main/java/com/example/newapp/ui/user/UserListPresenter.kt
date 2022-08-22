@@ -4,6 +4,7 @@ import com.example.newapp.core.Screens
 import com.example.newapp.model.GithubUser
 import com.example.newapp.repository.GithubRepository
 import com.github.terrakok.cicerone.Router
+
 import moxy.MvpPresenter
 
 class UserListPresenter(
@@ -13,7 +14,17 @@ class UserListPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.initList(repository.getUsers())
+
+        viewState.showLoading()
+        repository.getUsers().subscribe(
+            {
+                viewState.initList(it)
+            }, {
+
+            }
+        )
+        viewState.hideLoading()
+
     }
 
     fun onBackPressed(): Boolean {

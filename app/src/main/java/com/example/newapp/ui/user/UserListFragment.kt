@@ -52,6 +52,14 @@ class UserListFragment : MvpAppCompatFragment(), UserListView, OnBackPressedList
         adapter.users = list
     }
 
+    override fun showLoading() {
+        viewBinding.waitBanner.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        viewBinding.waitBanner.visibility = View.GONE
+    }
+
     fun initClickListener(){
         adapter.setOnItemClickListener { user: GithubUser? -> user?.let { onItemClick(it) } }
     }

@@ -8,4 +8,6 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface UserListView : MvpView {
     fun initList(list: List<GithubUser>)
+    fun showLoading()
+    fun hideLoading()
 }
