@@ -1,4 +1,5 @@
 package com.example.newapp.model
+
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 

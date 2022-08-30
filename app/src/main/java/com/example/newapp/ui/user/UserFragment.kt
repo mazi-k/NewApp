@@ -6,20 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.newapp.App
+import com.example.newapp.GITHUB_USER
 import com.example.newapp.core.OnBackPressedListener
 import com.example.newapp.databinding.FragmentUserBinding
 import com.example.newapp.repository.impls.GithubRepositoryImpl
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UserFragment (): MvpAppCompatFragment(), UserView, OnBackPressedListener {
+class UserFragment : MvpAppCompatFragment(), UserView, OnBackPressedListener {
     companion object {
-        fun getInstance(): UserFragment {
-            return UserFragment()
+        fun getInstance(bundle: Bundle): UserFragment {
+            return UserFragment().apply {
+                arguments = bundle
+            }
         }
     }
 
     private lateinit var binding: FragmentUserBinding
+    private lateinit var userId: String
 
     private val presenter: UserPresenter by moxyPresenter {
         UserPresenter(GithubRepositoryImpl(), App.instance.router)
@@ -37,7 +41,9 @@ class UserFragment (): MvpAppCompatFragment(), UserView, OnBackPressedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userId = arguments?.getString(GITHUB_USER).toString()
         with(binding) {
+            login.text = userId
         }
     }
 

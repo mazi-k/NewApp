@@ -33,7 +33,7 @@ class UserListPresenter(
     }
 
     fun onItemChoose(user: GithubUser): Boolean {
-        router.navigateTo(Screens.UserScreen)
+        router.navigateTo(Screens.UserScreen(user.login))
         return true
     }
 }

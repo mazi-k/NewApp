@@ -4,7 +4,7 @@ import com.example.newapp.repository.GithubRepository
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 
-class UserPresenter (
+class UserPresenter(
     private val repository: GithubRepository,
     private val router: Router
 ) : MvpPresenter<UserView>() {
