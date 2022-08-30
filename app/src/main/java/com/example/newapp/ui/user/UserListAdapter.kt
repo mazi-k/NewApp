@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newapp.R
+import com.example.newapp.core.OnItemClickListener
 import com.example.newapp.model.GithubUser
 
-class UserAdapter() :
+class UserAdapter(
+    private var onItemViewClick: OnItemClickListener
+) :
     RecyclerView.Adapter<GithubUserViewHolder>() {
-
-    private lateinit var onItemClick: ((GithubUser) -> Unit)
 
     var users: List<GithubUser> = emptyList()
         @SuppressLint("NotifyDataSetChanged")
@@ -23,27 +24,17 @@ class UserAdapter() :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubUserViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
-        return GithubUserViewHolder(view, onItemClick)
+        return GithubUserViewHolder(view, onItemViewClick)
     }
 
     override fun onBindViewHolder(holder: GithubUserViewHolder, position: Int) {
-        val user = users[position]
-
         holder.bind(users[position])
-
-        holder.itemView.setOnClickListener {
-            onItemClick.invoke(user)
-        }
     }
 
     override fun getItemCount() = users.size
-
-    fun setOnItemClickListener(gh: (GithubUser) -> Unit) {
-        onItemClick = gh
-    }
 }
 
-class GithubUserViewHolder(itemView: View, private val clickListener: (GithubUser) -> Unit) :
+class GithubUserViewHolder(itemView: View, private val clickListener: OnItemClickListener) :
     RecyclerView.ViewHolder(itemView) {
 
     lateinit var githubUser: GithubUser
@@ -51,20 +42,16 @@ class GithubUserViewHolder(itemView: View, private val clickListener: (GithubUse
     private val tvLogin by lazy { itemView.findViewById<TextView>(R.id.tvUserLogin) }
 
     fun bind(user: GithubUser) = with(user) {
-        tvLogin.text = login
         githubUser = user
-        itemView.setOnClickListener {
-            itemView.setOnClickListener { v: View? ->
-                clickListener.invoke(githubUser)
-            }
+        tvLogin.text = login
+        itemView.apply {
+            setOnClickListener { clickListener.onItemClick(user) }
         }
     }
 
     init {
-        itemView.setOnClickListener {
-            itemView.setOnClickListener { v: View? ->
-                clickListener.invoke(githubUser)
-            }
+        itemView.apply {
+            setOnClickListener { clickListener.onItemClick(githubUser) }
         }
     }
 }

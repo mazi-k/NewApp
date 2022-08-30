@@ -14,7 +14,7 @@ import com.example.newapp.repository.impls.GithubRepositoryImpl
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UserListFragment : MvpAppCompatFragment(), UserListView, OnBackPressedListener, OnItemClickListener {
+class UserListFragment : MvpAppCompatFragment(), UserListView, OnBackPressedListener {
 
     companion object {
         fun getInstance(): UserListFragment {
@@ -24,7 +24,11 @@ class UserListFragment : MvpAppCompatFragment(), UserListView, OnBackPressedList
 
     private lateinit var viewBinding: FragmentUserListBinding
 
-    private val adapter = UserAdapter()
+    private val adapter = UserAdapter(object : OnItemClickListener {
+        override fun onItemClick(user: GithubUser) {
+            presenter.onItemChoose(user)
+        }
+    })
     private val presenter: UserListPresenter by moxyPresenter {
         UserListPresenter(GithubRepositoryImpl(), App.instance.router)
     }
@@ -45,25 +49,18 @@ class UserListFragment : MvpAppCompatFragment(), UserListView, OnBackPressedList
             rvGithubUsers.layoutManager = LinearLayoutManager(requireContext())
             rvGithubUsers.adapter = adapter
         }
-        initClickListener()
     }
 
     override fun initList(list: List<GithubUser>) {
         adapter.users = list
     }
 
-    fun initClickListener(){
-        adapter.setOnItemClickListener { user: GithubUser? -> user?.let { onItemClick(it) } }
+    override fun showLoading() {
+        viewBinding.waitBanner.visibility = View.VISIBLE
     }
 
-    override fun onItemClick(user: GithubUser): Boolean {
-        presenter.onItemChoose(user)
-//        requireActivity()
-//            .supportFragmentManager
-//            .beginTransaction()
-//            .replace(R.id.container, UserFragment())
-//            .commit()
-        return true
+    override fun hideLoading() {
+        viewBinding.waitBanner.visibility = View.GONE
     }
 
     override fun onBackPressed() = presenter.onBackPressed()
