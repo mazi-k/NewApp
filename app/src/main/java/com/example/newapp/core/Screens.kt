@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import com.example.newapp.GITHUB_USER
+import com.example.newapp.ui.images.ImagesFragment
+import com.example.newapp.ui.settings.SettingsFragment
 import com.example.newapp.ui.user.UserFragment
 import com.example.newapp.ui.user.UserListFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
@@ -20,6 +22,18 @@ class Screens {
             return UserFragment.getInstance(Bundle().apply {
                 putString(GITHUB_USER, id)
             })
+        }
+    }
+
+    object ImagesScreen : FragmentScreen {
+        override fun createFragment(factory: FragmentFactory): Fragment {
+            return ImagesFragment.getInstance()
+        }
+    }
+
+    object SettingsScreen : FragmentScreen {
+        override fun createFragment(factory: FragmentFactory): Fragment {
+            return SettingsFragment.getInstance()
         }
     }
 }

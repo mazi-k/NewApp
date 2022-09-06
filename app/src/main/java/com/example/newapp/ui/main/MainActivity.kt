@@ -20,6 +20,9 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        init()
+        setupNavigation()
     }
 
     override fun onResumeFragments() {
@@ -39,6 +42,32 @@ class MainActivity : MvpAppCompatActivity(), MainView {
             }
         }
         presenter.onBackPressed()
+    }
+
+    private fun setupNavigation() {
+        binding.bottomNavigationView.selectedItemId = R.id.action_bottom_view_home
+    }
+
+    private fun init() {
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.action_bottom_view_home -> {
+                    presenter.onHomeScreen()
+                    true
+                }
+                R.id.action_bottom_view_settings -> {
+                    presenter.onSettingsScreen()
+                    true
+                }
+                R.id.action_bottom_view_images -> {
+                    presenter.onImagesScreen()
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
     }
 
 }

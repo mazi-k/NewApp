@@ -16,4 +16,16 @@ class MainPresenter(
     fun onBackPressed() {
         router.exit()
     }
+
+    fun onSettingsScreen(){
+        router.replaceScreen(Screens.SettingsScreen)
+    }
+
+    fun onImagesScreen(){
+        router.replaceScreen(Screens.ImagesScreen)
+    }
+
+    fun onHomeScreen(){
+        router.replaceScreen(Screens.UsersScreen)
+    }
 }
